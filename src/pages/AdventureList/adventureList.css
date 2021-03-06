@@ -1,0 +1,4 @@
+.adventureList {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,8 @@
+#root {
+  display: flex;
+  justify-content: center;
+}
+.mainContent {
+  max-width: 1366px;
+  flex-grow: 1;
+}
