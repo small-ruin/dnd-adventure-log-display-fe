@@ -2,12 +2,12 @@ interface Log {
   id: number,
   name:　string,
   content: string,
-  createdAt: string,
+  createAt: string,
 }
 interface Adventure {
   id: number,
   name: string,
-  createdAt: string,
+  createAt: string,
   logs: Log[],
 }
 

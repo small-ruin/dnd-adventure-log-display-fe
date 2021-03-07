@@ -23,7 +23,7 @@ export default function LogComp() {
   return (
     <div className="log mainContent">
       <h1>{ log.name }</h1>
-      <h3>{ log.createdAt }</h3>
+      <h3>{ log.createAt }</h3>
       <div dangerouslySetInnerHTML={{ __html: log.content}}></div>
     </div>
   )

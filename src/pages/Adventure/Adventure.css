@@ -2,3 +2,13 @@
   display: flex;
   flex-direction: column;
 }
+
+.adventure .content {
+    display: flex;
+    justify-content: space-around;
+}
+
+.adventure .left {
+    display: flex;
+    flex-direction: column;;
+}

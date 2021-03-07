@@ -10,6 +10,7 @@ interface Params {
 export default function AdventureComp() {
   const { id } = useParams<Params>();
 
+  const [key, setKey] = useState<string>('');
   const [adv, setAdv] = useState<Adventure | null>(null)
   const [logs, setLogs] = useState<Log[] | null>(null)
   const [error, setError] = useState<boolean>(false)
@@ -38,11 +39,23 @@ export default function AdventureComp() {
 
   return (
     <div className='adventure mainContent'>
-      <h1>{ adv.name }</h1>
-      <h3>{ adv.createdAt }</h3>
-      {
-        logs?.map(log => <Link to={`/log/${log.id}`} key={log.id}>{ log.name }</Link>)
-      }
+      <h1 className='title'>{ adv.name }</h1>
+      <h3 className='createAt'>{ adv.createAt }</h3>
+      <div className='content'>
+        <section className='left'>
+            {
+                logs?.map(log => <Link to={`/log/${log.id}`} key={log.id}>{ log.name }</Link>)
+            }
+        </section>
+        <section className='right'>
+            <input value={key} onChange={event => setKey(event.target.value)} />
+            <button onClick={() => handleSerch() }>搜索</button>
+        </section>
+      </div>
     </div>
   )
+
+  function handleSerch() {
+      get('/adventure/search', { params: { key, id } })
+  }
 }
