@@ -2,7 +2,7 @@ interface Log {
   id: number,
   name:　string,
   content: string,
-  createAt: string,
+  createdAt: string,
 }
 interface Adventure {
   id: number,

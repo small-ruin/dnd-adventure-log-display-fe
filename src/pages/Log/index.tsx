@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Log } from '../../interface';
 import { get } from '../../utils';
 import { useParams } from 'react-router-dom';
+import './Log.css';
 
 interface Params {
   id: string
@@ -23,7 +24,7 @@ export default function LogComp() {
   return (
     <div className="log mainContent">
       <h1>{ log.name }</h1>
-      <h3>{ log.createAt }</h3>
+      <h3 className="grey-title">{ log.createdAt }</h3>
       <div dangerouslySetInnerHTML={{ __html: log.content}}></div>
     </div>
   )

@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+html, body, #root {
+    width: 100%;
+    background-color: #f9f9f9;
+}
+
+a {
+    /* color: #404040; */
+    text-decoration: inherit;
+}
+
+a:link {
+    color: #234A84
+}
+a:visited {
+    color: #5588a3
+}
+a:active, a:hover {
+    color: #00334e
+}

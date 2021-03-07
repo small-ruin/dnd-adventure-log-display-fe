@@ -4,6 +4,7 @@ import cheerio from 'cheerio';
 import { get } from '../../utils';
 import { useParams, Link } from 'react-router-dom';
 import './Adventure.css';
+import Button from '../../components/Button'
 
 interface Params {
   id: string
@@ -42,16 +43,16 @@ export default function AdventureComp() {
   return (
     <div className='adventure mainContent'>
       <h1 className='title'>{ adv.name }</h1>
-      <h3 className='createAt'>{ adv.createAt }</h3>
+      <h3 className='createAt grey-title'>{ adv.createAt }</h3>
       <div className='content'>
         <section className='left'>
             {
-                logs?.map(log => <Link to={`/log/${log.id}`} key={log.id}>{ log.name }</Link>)
+                logs?.map(log => <Link className={'log-list'} to={`/log/${log.id}`} key={log.id}>{ log.name }</Link>)
             }
         </section>
         <section className='right'>
             <input value={key} onChange={event => setKey(event.target.value)} />
-            <button onClick={() => handleSerch() }>搜索</button>
+            <Button onClick={() => handleSerch() }>搜索</Button>
             {
                 searchResult?.map(i => {
                     return <div key={i.id}>

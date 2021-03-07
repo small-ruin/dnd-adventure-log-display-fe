@@ -5,7 +5,6 @@
 
 .adventure .content {
     display: flex;
-    justify-content: space-around;
 }
 
 .adventure .left {
@@ -13,9 +12,34 @@
     flex-direction: column;
     flex-shrink: 0;
     padding: 10px;
-    border-right: 1px solid #666;
+    padding: 0 20px 0 40px;
+    border-right: 2px solid #234A84;
+}
+
+.left .log-list {
+    margin-bottom: 5px;
+    font-size: 18px;
 }
 
 .adventure .right {
     padding: 10px;
+    padding-left: 20px;
+    flex-grow: 1;
+}
+
+.right input {
+    width: 100%;
+    font-size: 18px;
+    height: 1.4em;
+}
+
+.right .button {
+    margin-top: 10px;
+}
+
+@media screen and (max-width: 960px) {
+    .adventure .content {
+        display: flex;
+        flex-direction: column-reverse;
+    }
 }
