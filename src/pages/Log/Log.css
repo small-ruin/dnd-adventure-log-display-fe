@@ -2,3 +2,39 @@
     flex-grow: 0;
     position: relative;
 }
+
+.log.mainContent .content-hook {
+    font-size: 16px;
+}
+
+.log.mainContent .modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+.log.mainContent .modal .buttonGroup {
+    padding-left: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.log.mainContent .modal .button {
+    margin: 0px 5px 0 0;
+}
+
+@media screen and (max-width: 720px) {
+    .log.mainContent .modal {
+        width: 75%;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .log.mainContent .modal {
+        width: 95%;
+    }
+}

@@ -57,7 +57,7 @@ export default function AdventureComp() {
             {
                 searchResult?.map(i => {
                     return <div key={i.id}>
-                        <h4>{ i.name }</h4>
+                        <h4><Link style={{color: '#333'}} to={`/log/${i.id}`}>{ i.name }</Link></h4>
                         { i.results.map((result, i) => <div key={result + i} dangerouslySetInnerHTML={{__html: result}}></div>) }
                     </div>
                 })
@@ -78,9 +78,10 @@ export default function AdventureComp() {
   }
 
   function parseHtml(htmlStr: string) {
+    htmlStr = htmlStr.substr(3, htmlStr.length - 3);
     const $ = cheerio.load(htmlStr);
     const result: string[] = [];
-    $('font').each(function() {
+    $('font, p').each(function() {
         const text = $(this).html();
         if (text && text.indexOf(key) !== -1) {
             const temp = $('<div>').append($(this).clone())

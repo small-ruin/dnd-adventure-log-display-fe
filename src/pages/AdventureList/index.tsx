@@ -30,7 +30,7 @@ export default function AdventureComp() {
 
   return (
     <div className='adventure-list mainContent'>
-        <img src="/Revachol_034.webp" width="90"></img>
+        <img src="/Revachol_034.webp" alt="???" width="90"></img>
         <p>一叠文件已经放在桌上，如同她一开始就知道你需要什么。</p>
         <p>你仿佛听到了掷骰的声音。你开始觉得自己错过了一个侦察检定。这件事情也许没什么大不了的……</p>
         { advs.map(adv => <Link className="adventure-link" to={`/adventure/${ adv.id }`} key={adv.id}>{ adv.name }</Link>) }
