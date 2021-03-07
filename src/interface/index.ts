@@ -10,8 +10,14 @@ interface Adventure {
   createAt: string,
   logs: Log[],
 }
+interface SearchResult {
+    id: number,
+    name: string,
+    results: string[],
+}
 
 export type {
   Log,
   Adventure,
+  SearchResult,
 }

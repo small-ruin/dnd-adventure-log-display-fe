@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
-import { get } from '../../utils';
-import { Adventure } from '../../interface';
 import AdventureList from '../AdventureList';
 import AdventureComp from '../Adventure';
 import LogComp from '../Log';

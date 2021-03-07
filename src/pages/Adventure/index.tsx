@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Adventure, Log } from '../../interface';
+import { Adventure, Log, SearchResult } from '../../interface';
+import cheerio from 'cheerio';
 import { get } from '../../utils';
 import { useParams, Link } from 'react-router-dom';
 import './Adventure.css';
@@ -14,6 +15,7 @@ export default function AdventureComp() {
   const [adv, setAdv] = useState<Adventure | null>(null)
   const [logs, setLogs] = useState<Log[] | null>(null)
   const [error, setError] = useState<boolean>(false)
+  const [searchResult, setSearchResult] = useState<SearchResult[]>([])
 
   useEffect(() => {
     get('/adventure/' + id).then(res => {
@@ -50,6 +52,14 @@ export default function AdventureComp() {
         <section className='right'>
             <input value={key} onChange={event => setKey(event.target.value)} />
             <button onClick={() => handleSerch() }>搜索</button>
+            {
+                searchResult?.map(i => {
+                    return <div key={i.id}>
+                        <h4>{ i.name }</h4>
+                        { i.results.map((result, i) => <div key={result + i} dangerouslySetInnerHTML={{__html: result}}></div>) }
+                    </div>
+                })
+            }
         </section>
       </div>
     </div>
@@ -57,5 +67,24 @@ export default function AdventureComp() {
 
   function handleSerch() {
       get('/adventure/search', { params: { key, id } })
+        .then(res => {
+            if (res.data.length > 0) {
+                res.data.forEach((log: Log & SearchResult) => log.results = parseHtml(log.content));
+                setSearchResult(res.data)
+            }
+        })
+  }
+
+  function parseHtml(htmlStr: string) {
+    const $ = cheerio.load(htmlStr);
+    const result: string[] = [];
+    $('font').each(function() {
+        const text = $(this).html();
+        if (text && text.indexOf(key) !== -1) {
+            const temp = $('<div>').append($(this).clone())
+            result.push(temp.html() || '');
+        }
+    })
+    return result;
   }
 }
