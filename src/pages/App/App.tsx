@@ -8,11 +8,6 @@ import AdventureComp from '../Adventure';
 import LogComp from '../Log';
 
 function App() {
-  const [ advs, setAdvs ] = useState<Adventure[]>([]);
-  useEffect(() => {
-    get('/adventure').then(res => setAdvs(res.data));
-  }, [])
-
   return (
     <Router>
       <Switch>

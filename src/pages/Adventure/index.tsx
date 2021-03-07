@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Adventure } from '../../interface';
+import { Adventure, Log } from '../../interface';
 import { get } from '../../utils';
 import { useParams, Link } from 'react-router-dom';
 import './Adventure.css';
@@ -11,6 +11,7 @@ export default function AdventureComp() {
   const { id } = useParams<Params>();
 
   const [adv, setAdv] = useState<Adventure | null>(null)
+  const [logs, setLogs] = useState<Log[] | null>(null)
   const [error, setError] = useState<boolean>(false)
 
   useEffect(() => {
@@ -19,6 +20,10 @@ export default function AdventureComp() {
     }, err => {
       console.error(err);
       setError(true);
+    })
+    
+    get('/adventure/' + id + '/logs').then(res => {
+      setLogs(res.data);
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -36,7 +41,7 @@ export default function AdventureComp() {
       <h1>{ adv.name }</h1>
       <h3>{ adv.createdAt }</h3>
       {
-        adv.logs.map(log => <Link to={`/log/${log.id}`} key={log.id}>{ log.name }</Link>)
+        logs?.map(log => <Link to={`/log/${log.id}`} key={log.id}>{ log.name }</Link>)
       }
     </div>
   )
