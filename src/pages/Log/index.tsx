@@ -3,6 +3,7 @@ import { Log } from '../../interface';
 import { get } from '../../utils';
 import { useParams } from 'react-router-dom';
 import './Log.css';
+import Loading from '../../components/Loading'
 
 interface Params {
   id: string
@@ -18,7 +19,7 @@ export default function LogComp() {
   }, []);
 
   if (!log) {
-    return <>loading...</>
+    return <Loading></Loading>
   }
 
   return (

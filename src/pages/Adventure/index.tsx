@@ -4,7 +4,8 @@ import cheerio from 'cheerio';
 import { get } from '../../utils';
 import { useParams, Link } from 'react-router-dom';
 import './Adventure.css';
-import Button from '../../components/Button'
+import Button from '../../components/Button';
+import Loading from '../../components/Loading';
 
 interface Params {
   id: string
@@ -33,7 +34,7 @@ export default function AdventureComp() {
   }, []);
 
   if (!adv) {
-    return <>loading...</>
+    return <Loading></Loading>
   }
 
   if (error) {

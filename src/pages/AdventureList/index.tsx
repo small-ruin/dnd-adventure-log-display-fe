@@ -3,6 +3,8 @@ import { Adventure } from '../../interface';
 import { get } from '../../utils';
 import { Link } from 'react-router-dom';
 import './adventureList.css';
+import '../../components/Loading'
+import Loading from '../../components/Loading';
 
 export default function AdventureComp() {
   const [advs, setAdvs] = useState<Adventure[] | null>(null)
@@ -19,7 +21,7 @@ export default function AdventureComp() {
   }, []);
 
   if (!advs) {
-    return <>loading...</>
+    return <Loading></Loading>
   }
 
   if (error) {
