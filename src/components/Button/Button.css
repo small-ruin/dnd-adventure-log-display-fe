@@ -4,6 +4,7 @@
     background-color: #234A84;
     color: #fff;
     border-radius: 2px;
+    cursor: pointer;
 }
 
 .button:hover {
