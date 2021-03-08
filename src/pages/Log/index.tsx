@@ -23,7 +23,7 @@ export default function LogComp() {
   const [nextId, setNextId] = useState<string | null>(null);
   const [prevId, setPrevId] = useState<string | null>(null);
   
-  let fontSize = 16;
+  let fontSize = 18;
 
   useEffect(() => {
     get('/log/' + id)
@@ -76,8 +76,9 @@ export default function LogComp() {
                 <Button type="text" onClick={() => stepFontSize(-1)}>字号-</Button>
             </div>
             <div className="button-group">
-            <Button type="text" onClick={() => setFontFamily('Helvetica Neue, Microsoft YaHei, PingFang SC, sans-serif')}>黑体</Button>
+            <Button type="text" onClick={() => setFontFamily('Helvetica Neue, Microsoft YaHei, PingFang SC, Heiti SC, sans-serif')}>黑体</Button>
             <Button type="text" onClick={() => setFontFamily('Georgia,Times New Roman,Times,Songti SC,serif')}>宋体</Button>
+            （移动端无效）
             </div>
         </div>
       <h1>{ log.name }</h1>
