@@ -6,6 +6,12 @@ import './adventureList.css';
 import '../../components/Loading'
 import Loading from '../../components/Loading';
 
+  const diceMaker = [
+    "“是啊。”她凝视着窗外，并没有听到你的话。“或许整个世界都被诅咒了？这是个多么危险的地方啊。从来没有什么是按照你希望的方式运作的。”",
+    "“这就是大家喜欢角色扮演游戏的原因。你可以随心所欲地成为任何人。你可以一遍遍地尝试。不过即使是掷骰子，也有某种固有的暴力因素在里面。”",
+    "”就好像你每次锻造骰子的时候，有些东西就会消失。另一种替代的结局，或者是一个完全不同的世界……“她从桌子上抓起一对骰子，拿到灯光下查看。",
+  ]
+
 export default function AdventureComp() {
   const [advs, setAdvs] = useState<Adventure[] | null>(null)
   const [error, setError] = useState<boolean>(false)
@@ -31,8 +37,7 @@ export default function AdventureComp() {
   return (
     <div className='adventure-list mainContent'>
         <img src="/Revachol_034.webp" alt="???" width="90"></img>
-        <p>一叠文件已经放在桌上，如同她一开始就知道你需要什么。</p>
-        <p>你仿佛听到了掷骰的声音。你开始觉得自己错过了一个侦察检定。这件事情也许没什么大不了的……</p>
+        { diceMaker.map(i => <p key={i}>{i}</p>)}
         { advs.map(adv => <Link className="adventure-link" to={`/adventure/${ adv.id }`} key={adv.id}>{ adv.name }</Link>) }
     </div>
   )
