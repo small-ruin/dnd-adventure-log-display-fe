@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import cheerio from 'cheerio';
 import { Log } from '../../interface';
 import { get } from '../../utils';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import './Log.css';
 import Loading from '../../components/Loading'
 import Button from '../../components/Button';
+import { AxiosResponse } from 'axios';
 
 interface Params {
   id: string
@@ -18,12 +19,25 @@ export default function LogComp() {
 
   const [log, setLog] = useState<Log | null>(null);
   const [showSetting, setShowSetting] = useState<boolean>(true);
-  const [showDiaolog, setShowDialog] = useState<boolean>(false);
-
+  const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [nextId, setNextId] = useState<string | null>(null);
+  const [prevId, setPrevId] = useState<string | null>(null);
+  
   let fontSize = 16;
 
   useEffect(() => {
-    get('/log/' + id).then(res => setLog(res.data))
+    get('/log/' + id)
+        .then((res: AxiosResponse<Log>) => {
+            setLog(res.data)
+            const order = res.data.adventure?.order;
+
+            if (order) {
+                const arr = order.split(',');
+                const nowIndex = arr.findIndex(i => i ===id);
+                nowIndex !== 0 && setPrevId(arr[nowIndex - 1]);
+                nowIndex !== arr.length - 1 && setNextId(arr[nowIndex + 1]);
+            }
+        })
 
     document.addEventListener("scroll", e => handleScroll());
 
@@ -38,7 +52,7 @@ export default function LogComp() {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id]);
 
   if (!log) {
     return <Loading></Loading>
@@ -46,24 +60,33 @@ export default function LogComp() {
 
   return (
     <div className="log mainContent">
-        <div className="modal" style={{ display: showDiaolog ? 'flex' : 'none' }}>
+        <div className="modal" style={{ display: showDialog ? 'flex' : 'none' }}>
             <div className="modal-close" onClick={toggleModal}>✗</div>
             <div>实验功能，谨慎使用：</div>
             <div className="button-group">
-                <Button onClick={removeBrackets}>去除括号</Button>
-                <Button onClick={removeColor}>忽略Log颜色</Button>
-                <Button onClick={() => stepFontSize(1)}>字号+</Button>
-                <Button onClick={() => stepFontSize(-1)}>字号-</Button>
+                <Button type="text" onClick={removeBrackets}>去除括号</Button>
+                <Button type="text" onClick={removeColor}>忽略Log颜色</Button>
+            </div>
+            <div className="button-group">
+                <Button type="text" onClick={() => stepFontSize(1)}>字号+</Button>
+                <Button type="text" onClick={() => stepFontSize(-1)}>字号-</Button>
+            </div>
+            <div className="button-group">
+            <Button type="text" onClick={() => setFontFamily('Helvetica Neue, Microsoft YaHei, PingFang SC, sans-serif')}>黑体</Button>
+            <Button type="text" onClick={() => setFontFamily('Georgia,Times New Roman,Times,Songti SC,serif')}>宋体</Button>
             </div>
         </div>
       <h1>{ log.name }</h1>
       <h3 className="grey-title">{ log.createdAt }</h3>
       <div className="content-hook" dangerouslySetInnerHTML={{ __html: log.content}}></div>
       <Button
-        style={{ position: 'fixed', bottom: '5%', right: '5%',
-            borderRadius: '50%', width: '40px', height: '40px', padding: 0, textAlign: 'center', lineHeight: '40px',
-            display: showSetting ? 'block' : 'none' }}
+        type={'circle'}
+        style={{ position: 'fixed', bottom: '5%', right: '5%', display: showSetting ? 'block' : 'none' }}
         onClick={toggleModal}>设置</Button>
+        <div className={'bottom-button-group'}>
+            { prevId && <Link to={'/log/' + prevId}>上一夜</Link>}
+            { nextId && <Link to={'/log/' + nextId}>下一夜</Link>}
+        </div>
     </div>
   )
 
@@ -92,11 +115,17 @@ export default function LogComp() {
         });
     }
     function stepFontSize(step: number) {
-        let $contentHook = document.querySelector('.content-hook p');
+        let $contentHook: HTMLElement | null = document.querySelector('.content-hook p');
         fontSize += step;
-        $contentHook?.setAttribute('style', 'font-size:' + fontSize + 'px');
+        if ($contentHook?.style)
+            $contentHook.style.fontSize = fontSize + 'px';
+    }
+    function setFontFamily(family: string) {
+        let $contentHook: HTMLElement | null = document.querySelector('.content-hook p');
+        if ($contentHook?.style)
+            $contentHook.style.fontFamily = family 
     }
     function toggleModal() {
-        setShowDialog(!showDiaolog)
+        setShowDialog(!showDialog)
     }
 }
