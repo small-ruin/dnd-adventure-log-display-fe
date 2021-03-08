@@ -5,6 +5,14 @@
 
 .log.mainContent .content-hook {
     font-size: 16px;
+    line-height: 1.67;
+}
+
+.log.mainContent .bottom-button-group {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+
 }
 
 .log.mainContent .modal {
@@ -15,16 +23,18 @@
     width: 50%;
 }
 
-.log.mainContent .modal .buttonGroup {
+.log.mainContent .modal .button-group {
     padding-left: 5px;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
+    margin-top: 10px;
 }
 
 .log.mainContent .modal .button {
-    margin: 0px 5px 0 0;
+    margin: 0px 10px 0 0;
 }
 
 @media screen and (max-width: 720px) {

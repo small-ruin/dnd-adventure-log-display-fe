@@ -31,7 +31,7 @@ export default function AdventureComp() {
       setLogs(res.data);
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id]);
 
   if (!adv) {
     return <Loading></Loading>

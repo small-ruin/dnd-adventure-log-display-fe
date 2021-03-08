@@ -3,12 +3,14 @@ interface Log {
   name:　string,
   content: string,
   createdAt: string,
+  adventure?: Adventure,
 }
 interface Adventure {
   id: number,
   name: string,
   createAt: string,
   logs: Log[],
+  order: string,
 }
 interface SearchResult {
     id: number,
