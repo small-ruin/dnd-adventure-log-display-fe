@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import cheerio from 'cheerio';
 import { Log } from '../../interface';
 import { get } from '../../utils';
 import { Link, useParams } from 'react-router-dom';
@@ -20,6 +19,7 @@ export default function LogComp() {
   const [log, setLog] = useState<Log | null>(null);
   const [showSetting, setShowSetting] = useState<boolean>(true);
   const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [bracketsShowing, setBracketsShowing] = useState<boolean>(true);
   const [nextId, setNextId] = useState<string | null>(null);
   const [prevId, setPrevId] = useState<string | null>(null);
   
@@ -64,7 +64,11 @@ export default function LogComp() {
             <div className="modal-close" onClick={toggleModal}>✗</div>
             <div>实验功能，谨慎使用：</div>
             <div className="button-group">
-                <Button type="text" onClick={removeBrackets}>去除括号</Button>
+                {
+                    bracketsShowing
+                    ? <Button type="text" onClick={hideBrackets}>去除括号</Button>
+                    : <Button type="text" onClick={showBrackets}>显示单行括号</Button>
+                }
                 <Button type="text" onClick={removeColor}>忽略Log颜色</Button>
             </div>
             <div className="button-group">
@@ -90,24 +94,29 @@ export default function LogComp() {
     </div>
   )
 
-    function removeBrackets() {
-        const $ = cheerio.load(log?.content || '');
-        const newHtmlArr: string[] = [];
-        $('font, br').each(function() {
-            const $node = $(this);
-            const text = $node.text()
-            if (text.match(/.*> [（()].*[)）]?/)) {
-                while (newHtmlArr.length && newHtmlArr[newHtmlArr.length - 1].match(/&nbsp;|\d+:\d+:\d+|<br>/)) {
-                    newHtmlArr.pop();
-                }
-                return;
+    function hideBrackets() {
+        const eles: HTMLElement[] = Array.from(document.querySelectorAll('font, br'));
+        eles.forEach(ele => {
+            const text = ele.textContent;
+            if (text && text.match(/.*> [（()].*[)）]?/)) {
+                // const prev = ele.previousElementSibling as HTMLElement | null;
+                // while (prev && prev.textContent?.match(/&nbsp;|\d+:\d+:\d+|<br>/)) {
+                //     prev.style.display = 'none'
+                // }
+                ele.style.display = 'none'
+            } else {
+                ele.textContent && (ele.textContent = ele.textContent.replace(/（.*）/g, ''));
             }
-            $node.text(text.replace(/（.*）/g, ''));
-            newHtmlArr.push($('<div>').append($node.clone()).html() || '');
         })
-        newHtmlArr.unshift('<p>');
-        newHtmlArr.push('</p>');
-        setLog(Object.assign({}, log, { content: newHtmlArr.join('') }))
+        setBracketsShowing(false);
+    }
+    function showBrackets() {
+        const eles: HTMLElement[] = Array.from(document.querySelectorAll('font, br'));
+        eles.forEach(ele => {
+            if (ele.style.display === 'none')
+                ele.style.display = 'inline';
+        })
+        setBracketsShowing(true);
     }
     function removeColor() {
         document.querySelectorAll('font').forEach(ele => {
