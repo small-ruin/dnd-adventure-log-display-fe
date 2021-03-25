@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import './adventureList.css';
 import '../../components/Loading'
 import Loading from '../../components/Loading';
+import Revachol from '../../../public/Revachol_034.webp';
 
   const diceMaker = [
     "“是啊。”她凝视着窗外，并没有听到你的话。“或许整个世界都被诅咒了？这是个多么危险的地方啊。从来没有什么是按照你希望的方式运作的。”",
@@ -36,7 +37,7 @@ export default function AdventureComp() {
 
   return (
     <div className='adventure-list mainContent'>
-        <img src="/Revachol_034.webp" alt="???" width="90"></img>
+        <img src={Revachol} alt="新奇骰子匠" width="90"></img>
         { diceMaker.map(i => <p key={i}>{i}</p>)}
         { advs.map(adv => <Link className="adventure-link" to={`/adventure/${ adv.id }`} key={adv.id}>{ adv.name }</Link>) }
     </div>
