@@ -9,14 +9,14 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path='/adventure/:id'>
+        <Route path='/small-ruin/adventure/:id'>
           <AdventureComp
           ></AdventureComp>
         </Route>
-        <Route path='/log/:id'>
+        <Route path='/small-ruin/log/:id'>
           <LogComp />
         </Route>
-        <Route path='/'>
+        <Route path='/small-ruin/log/'>
           <AdventureList></AdventureList>
         </Route>
       </Switch>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Adventure } from '../../interface';
-import { get } from '../../utils';
+import { get, Urls } from '../../request';
 import { Link } from 'react-router-dom';
 import './adventureList.css';
 import '../../components/Loading'
@@ -39,7 +39,7 @@ export default function AdventureComp() {
     <div className='adventure-list mainContent'>
         <img src={Revachol} alt="新奇骰子匠" width="90"></img>
         { diceMaker.map(i => <p key={i}>{i}</p>)}
-        { advs.map(adv => <Link className="adventure-link" to={`/adventure/${ adv.id }`} key={adv.id}>{ adv.name }</Link>) }
+        { advs.map(adv => <Link className="adventure-link" to={ Urls.getAdventureUrl(adv.id) } key={adv.id}>{ adv.name }</Link>) }
     </div>
   )
 }

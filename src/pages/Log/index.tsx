@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Log } from '../../interface';
-import { get } from '../../utils';
+import { get } from '../../request';
 import { Link, useParams } from 'react-router-dom';
 import './Log.css';
 import Loading from '../../components/Loading'

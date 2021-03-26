@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { baseUrl } from './url';
 
-axios.defaults.baseURL = '/api';
+axios.defaults.baseURL = baseUrl + '/api';
 
 axios.interceptors.response.use(
     function(res) {

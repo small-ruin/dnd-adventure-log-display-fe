@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Adventure, Log, SearchResult } from '../../interface';
 import cheerio from 'cheerio';
-import { get } from '../../utils';
+import { get, Urls } from '../../request';
 import { useParams, Link } from 'react-router-dom';
 import './Adventure.css';
 import Button from '../../components/Button';
@@ -48,16 +48,16 @@ export default function AdventureComp() {
       <div className='content'>
         <section className='left'>
             {
-                logs?.map(log => <Link className={'log-list'} to={`/log/${log.id}`} key={log.id}>{ log.name }</Link>)
+                logs?.map(log => <Link className={'log-list'} to={ Urls.getLogUrl(log.id)} key={log.id}>{ log.name }</Link>)
             }
         </section>
         <section className='right'>
             <input value={key} onChange={event => setKey(event.target.value)} />
-            <Button onClick={() => handleSerch() }>搜索</Button>
+            <Button onClick={() => handleSearch() }>搜索</Button>
             {
                 searchResult?.map(i => {
                     return <div key={i.id}>
-                        <h4><Link style={{color: '#333'}} to={`/log/${i.id}`}>{ i.name }</Link></h4>
+                        <h4><Link style={{color: '#333'}} to={Urls.getLogUrl(i.id)}>{ i.name }</Link></h4>
                         { i.results.map((result, i) => <div key={result + i} dangerouslySetInnerHTML={{__html: result}}></div>) }
                     </div>
                 })
@@ -67,8 +67,8 @@ export default function AdventureComp() {
     </div>
   )
 
-  function handleSerch() {
-      get('/adventure/search', { params: { key, id } })
+  function handleSearch() {
+      get('/small-ruin/adventure/search', { params: { key, id } })
         .then(res => {
             if (res.data.length > 0) {
                 res.data.forEach((log: Log & SearchResult) => log.results = parseHtml(log.content));
