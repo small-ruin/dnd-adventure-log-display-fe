@@ -68,7 +68,7 @@ export default function AdventureComp() {
   )
 
   function handleSearch() {
-      get('/small-ruin/adventure/search', { params: { key, id } })
+      get('/adventure/search', { params: { key, id } })
         .then(res => {
             if (res.data.length > 0) {
                 res.data.forEach((log: Log & SearchResult) => log.results = parseHtml(log.content));

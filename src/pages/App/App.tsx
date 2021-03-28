@@ -18,6 +18,9 @@ function App() {
         <Route path={Urls.LOG}>
           <LogComp />
         </Route>
+        <Route path={Urls.ROOT}>
+          <AdventureList></AdventureList>
+        </Route>
         <Route path={Urls.ADVENTURE_LIST}>
           <AdventureList></AdventureList>
         </Route>
