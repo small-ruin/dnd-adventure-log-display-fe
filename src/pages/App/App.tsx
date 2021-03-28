@@ -4,20 +4,28 @@ import './App.css';
 import AdventureList from '../AdventureList';
 import AdventureComp from '../Adventure';
 import LogComp from '../Log';
+import NotFound from '../404'
+import { Urls } from '../../request'
 
 function App() {
   return (
     <Router>
       <Switch>
-        <Route path='/adventure/:id'>
+        <Route path={Urls.ADVENTURE}>
           <AdventureComp
           ></AdventureComp>
         </Route>
-        <Route path='/log/:id'>
+        <Route path={Urls.LOG}>
           <LogComp />
         </Route>
-        <Route path='/'>
+        <Route path={Urls.ADVENTURE_LIST}>
           <AdventureList></AdventureList>
+        </Route>
+        <Route path={Urls.NOT_FOUND}>
+          <NotFound></NotFound>
+        </Route>
+        <Route path={Urls.ERROR}>
+          <div>出错了！</div>
         </Route>
       </Switch>
     </Router>
