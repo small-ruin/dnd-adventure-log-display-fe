@@ -2,7 +2,7 @@
   "name": "dnd-adventure-log-display-fe",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/log",
+  "homepage": "/small-ruin",
   "dependencies": {
     "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.5",

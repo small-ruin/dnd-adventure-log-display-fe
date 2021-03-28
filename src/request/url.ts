@@ -1,5 +1,6 @@
 export const baseUrl = '/small-ruin/';
 export const Urls = {
+    ROOT: baseUrl + '/',
     ADVENTURE_LIST: baseUrl + 'adventure',
     ADVENTURE: baseUrl + 'adventure/:id',
     LOG: baseUrl + 'log/:id',
