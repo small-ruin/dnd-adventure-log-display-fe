@@ -1,0 +1,15 @@
+@use '../../styles/variables' as *;
+
+.button {
+    background-color: $御召御纳户;
+    color: #fff;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: $舛花;
+}
+
+.button:active {
+    background-color: $舛花;
+}

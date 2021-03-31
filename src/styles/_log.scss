@@ -1,21 +1,25 @@
-.log.mainContent {
+.log.main-content {
     flex-grow: 0;
     position: relative;
 }
 
-.log.mainContent .content-hook {
+.log.main-content .content-hook {
     font-size: 18px;
     line-height: 1.67;
 }
 
-.log.mainContent .bottom-button-group {
+.log.main-content .bottom-menu {
+    display: flex;
+    border: solid 1px #333
+}
+.log.main-content .bottom-button-group {
     display: flex;
     flex: 1;
     justify-content: space-between;
 
 }
 
-.log.mainContent .modal {
+.log.main-content .modal {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -23,7 +27,7 @@
     width: 50%;
 }
 
-.log.mainContent .modal .button-group {
+.log.main-content .modal .button-group {
     padding-left: 5px;
     display: flex;
     flex-direction: row;
@@ -33,18 +37,18 @@
     margin-top: 10px;
 }
 
-.log.mainContent .modal .button {
+.log.main-content .modal .button {
     margin: 0px 10px 0 0;
 }
 
 @media screen and (max-width: 720px) {
-    .log.mainContent .modal {
+    .log.main-content .modal {
         width: 75%;
     }
 }
 
 @media screen and (max-width: 380px) {
-    .log.mainContent .modal {
+    .log.main-content .modal {
         width: 95%;
     }
 }

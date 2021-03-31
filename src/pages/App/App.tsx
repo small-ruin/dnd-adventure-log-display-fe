@@ -1,6 +1,5 @@
 import React from 'react';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
-import './App.css';
 import AdventureList from '../AdventureList';
 import AdventureComp from '../Adventure';
 import LogComp from '../Log';

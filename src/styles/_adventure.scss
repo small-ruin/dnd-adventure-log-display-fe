@@ -1,3 +1,4 @@
+@use './variables';
 .adventure {
   display: flex;
   flex-direction: column;
@@ -13,7 +14,7 @@
     flex-shrink: 0;
     padding: 10px;
     padding: 0 20px 0 40px;
-    border-right: 2px solid #234A84;
+    border-right: 2px solid variables.$御召御纳户;
 }
 
 .left .log-list {

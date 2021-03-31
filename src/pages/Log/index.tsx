@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Log } from '../../interface';
 import { get } from '../../request';
 import { Link, useParams } from 'react-router-dom';
-import './Log.css';
 import Loading from '../../components/Loading'
 import Button from '../../components/Button';
 import { AxiosResponse } from 'axios';
@@ -59,7 +58,7 @@ export default function LogComp() {
   }
 
   return (
-    <div className="log mainContent">
+    <div className="log main-content">
         <div className="modal" style={{ display: showDialog ? 'flex' : 'none' }}>
             <div className="modal-close" onClick={toggleModal}>✗</div>
             <div>实验功能，谨慎使用：</div>
@@ -81,13 +80,12 @@ export default function LogComp() {
             （移动端无效）
             </div>
         </div>
-      <h1>{ log.name }</h1>
-      <h3 className="grey-title">{ log.createdAt }</h3>
-      <div className="content-hook" dangerouslySetInnerHTML={{ __html: log.content}}></div>
-      <Button
-        type={'circle'}
-        style={{ position: 'fixed', bottom: '5%', right: '5%', display: showSetting ? 'block' : 'none' }}
-        onClick={toggleModal}>设置</Button>
+        <h1>{ log.name }</h1>
+        <h3 className="grey-title">{ log.createdAt }</h3>
+        <div className="content-hook" dangerouslySetInnerHTML={{ __html: log.content}}></div>
+        <div className="bottomMenu">
+
+        </div>
         <div className={'bottom-button-group'}>
             { prevId && <Link to={'/log/' + prevId}>上一夜</Link>}
             { nextId && <Link to={'/log/' + nextId}>下一夜</Link>}

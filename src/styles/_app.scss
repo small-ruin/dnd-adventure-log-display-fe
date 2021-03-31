@@ -1,14 +1,19 @@
+@use './variables';
 #root {
   display: flex;
   justify-content: center;
+  background-color: variables.$白鼠;
+    min-height: 100%;
 }
-.mainContent {
-  max-width: 1366px;
-  width: 60%;
-  background-color: #fff;
-  margin: 10px;
-  padding: 40px;
+
+.main-content {
+    max-width: 1366px;
+    width: 60%;
+    background-color: variables.$白练;
+    margin: 10px;
+    padding: 40px;
 }
+
 h1, .createAt, .grey-title {
     text-align: center;
 }
@@ -42,21 +47,21 @@ h1 {
     body {
         background-color: #fff;
     }
-    .mainContent {
+    .main-content {
         width: 100%;
         padding: 10px;
     }
 }
 
 @media screen and (min-width: 720px) {
-    .mainContent {
+    .main-content {
         width: 80%;
         padding: 20px;
     }
 }
 
 @media screen and (min-width: 960px) {
-    .mainContent {
+    .main-content {
         width: 60%
     }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './Loading.css';
+import './Loading.scss';
 
 export default function Loading() {
     const [msg, setMsg] = useState('Loading...');

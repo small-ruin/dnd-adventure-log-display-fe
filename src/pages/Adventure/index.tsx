@@ -3,7 +3,6 @@ import { Adventure, Log, SearchResult } from '../../interface';
 import cheerio from 'cheerio';
 import { get, Urls } from '../../request';
 import { useParams, Link } from 'react-router-dom';
-import './Adventure.css';
 import Button from '../../components/Button';
 import Loading from '../../components/Loading';
 
@@ -42,7 +41,7 @@ export default function AdventureComp() {
   }
 
   return (
-    <div className='adventure mainContent'>
+    <div className='adventure main-content'>
       <h1 className='title'>{ adv.name }</h1>
       <h3 className='createAt grey-title'>{ adv.createAt }</h3>
       <div className='content'>
