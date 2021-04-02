@@ -1,9 +1,11 @@
 @use '../../styles/variables' as *;
+@use '../../styles/partial';
 
 .button {
     background-color: $御召御纳户;
-    color: #fff;
+    color: $胡粉;
     cursor: pointer;
+    @extend .medium-weight;
 }
 
 .button:hover {

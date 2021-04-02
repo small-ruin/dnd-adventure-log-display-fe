@@ -1,139 +1,91 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Log } from '../../interface';
 import { get } from '../../request';
 import { Link, useParams } from 'react-router-dom';
 import Loading from '../../components/Loading'
 import Button from '../../components/Button';
 import { AxiosResponse } from 'axios';
+import Dropdown, { DropdownItem } from '../../components/DropDown';
+import menus, { LOG_OPERATIONS, MENU_TYPE } from './logMenus';
+import logOperationHandles from './logOperationHandlers';
 
 interface Params {
-  id: string
+    id: string
 }
 
 let lastScrollTop = 0
 
 export default function LogComp() {
-  const { id } = useParams<Params>();
+    const { id } = useParams<Params>();
 
-  const [log, setLog] = useState<Log | null>(null);
-  const [showSetting, setShowSetting] = useState<boolean>(true);
-  const [showDialog, setShowDialog] = useState<boolean>(false);
-  const [bracketsShowing, setBracketsShowing] = useState<boolean>(true);
-  const [nextId, setNextId] = useState<string | null>(null);
-  const [prevId, setPrevId] = useState<string | null>(null);
-  
-  let fontSize = 18;
+    const [log, setLog] = useState<Log | null>(null);
+    const [showSetting, setShowSetting] = useState<boolean>(true);
+    const [nextId, setNextId] = useState<string | null>(null);
+    const [prevId, setPrevId] = useState<string | null>(null);
+    const [currentMenu, setCurrentMenu] = useState<MENU_TYPE | null>(null);
 
-  useEffect(() => {
-    get('/log/' + id)
-        .then((res: AxiosResponse<Log>) => {
-            setLog(res.data)
-            const order = res.data.adventure?.order;
+    let fontSize = 18;
 
-            if (order) {
-                const arr = order.split(',');
-                const nowIndex = arr.findIndex(i => i ===id);
-                nowIndex !== 0 && setPrevId(arr[nowIndex - 1]);
-                nowIndex !== arr.length - 1 && setNextId(arr[nowIndex + 1]);
-            }
-        })
+    useEffect(() => {
+        get('/log/' + id)
+            .then((res: AxiosResponse<Log>) => {
+                setLog(res.data)
+                const order = res.data.adventure?.order;
 
-    document.addEventListener("scroll", e => handleScroll());
+                if (order) {
+                    const arr = order.split(',');
+                    const nowIndex = arr.findIndex(i => i === id);
+                    nowIndex !== 0 && setPrevId(arr[nowIndex - 1]);
+                    nowIndex !== arr.length - 1 && setNextId(arr[nowIndex + 1]);
+                }
+            })
+
+        document.addEventListener("scroll", handleScroll);
+
+        return document.removeEventListener("scroll", handleScroll)
+    }, [id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    if (!log) {
+        return <Loading></Loading>
+    }
+
+    function handlerMenuClick(id: MENU_TYPE) {
+        setCurrentMenu(currentMenu === null ? id : null);
+    }
+    function handlerMenuItemClick({ id }: DropdownItem<LOG_OPERATIONS>) {
+        logOperationHandles[id]();
+    }
+    function getDropdownVisible(id: MENU_TYPE) {
+        return id === currentMenu ? true : false
+    }
+
+    return (
+        <div className="log main-content">
+            <h1>{log.name}</h1>
+            <h3 className="grey-title">{log.createdAt}</h3>
+            <div className="content-hook" dangerouslySetInnerHTML={{ __html: log.content }}></div>
+            <div className="bottom-menu">
+                {
+                    menus.map(menu => menu.dropdown ? <Dropdown key={menu.id} list={menu.dropdown} onSelect={handlerMenuItemClick} visible={getDropdownVisible(menu.id)}>
+                        <Button onClick={() => handlerMenuClick(menu.id)}>{menu.text}</Button>
+                    </Dropdown> : <Button>{menu.text}</Button>)
+                }
+            </div>
+            <div className={'bottom-button-group'}>
+                {prevId && <Link to={'/log/' + prevId}>上一夜</Link>}
+                {nextId && <Link to={'/log/' + nextId}>下一夜</Link>}
+            </div>
+        </div>
+    )
 
     function handleScroll() {
         var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
-        if (st > lastScrollTop){
+        if (st > lastScrollTop) {
             setShowSetting(false)
         } else {
             setShowSetting(true)
         }
         lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  if (!log) {
-    return <Loading></Loading>
-  }
-
-  return (
-    <div className="log main-content">
-        <div className="modal" style={{ display: showDialog ? 'flex' : 'none' }}>
-            <div className="modal-close" onClick={toggleModal}>✗</div>
-            <div>实验功能，谨慎使用：</div>
-            <div className="button-group">
-                {
-                    bracketsShowing
-                    ? <Button type="text" onClick={hideBrackets}>去除括号</Button>
-                    : <Button type="text" onClick={showBrackets}>显示单行括号</Button>
-                }
-                <Button type="text" onClick={removeColor}>忽略Log颜色</Button>
-            </div>
-            <div className="button-group">
-                <Button type="text" onClick={() => stepFontSize(1)}>字号+</Button>
-                <Button type="text" onClick={() => stepFontSize(-1)}>字号-</Button>
-            </div>
-            <div className="button-group">
-            <Button type="text" onClick={() => setFontFamily('Helvetica Neue, Microsoft YaHei, PingFang SC, Heiti SC, sans-serif')}>黑体</Button>
-            <Button type="text" onClick={() => setFontFamily('Georgia,Times New Roman,Times,Songti SC,serif')}>宋体</Button>
-            （移动端无效）
-            </div>
-        </div>
-        <h1>{ log.name }</h1>
-        <h3 className="grey-title">{ log.createdAt }</h3>
-        <div className="content-hook" dangerouslySetInnerHTML={{ __html: log.content}}></div>
-        <div className="bottomMenu">
-
-        </div>
-        <div className={'bottom-button-group'}>
-            { prevId && <Link to={'/log/' + prevId}>上一夜</Link>}
-            { nextId && <Link to={'/log/' + nextId}>下一夜</Link>}
-        </div>
-    </div>
-  )
-
-    function hideBrackets() {
-        const eles: HTMLElement[] = Array.from(document.querySelectorAll('font, br'));
-        eles.forEach(ele => {
-            const text = ele.textContent;
-            if (text && text.match(/.*> [（()].*[)）]?/)) {
-                // const prev = ele.previousElementSibling as HTMLElement | null;
-                // while (prev && prev.textContent?.match(/&nbsp;|\d+:\d+:\d+|<br>/)) {
-                //     prev.style.display = 'none'
-                // }
-                ele.style.display = 'none'
-            } else {
-                ele.textContent && (ele.textContent = ele.textContent.replace(/（.*）/g, ''));
-            }
-        })
-        setBracketsShowing(false);
-    }
-    function showBrackets() {
-        const eles: HTMLElement[] = Array.from(document.querySelectorAll('font, br'));
-        eles.forEach(ele => {
-            if (ele.style.display === 'none')
-                ele.style.display = 'inline';
-        })
-        setBracketsShowing(true);
-    }
-    function removeColor() {
-        document.querySelectorAll('font').forEach(ele => {
-            ele.setAttribute('color', '#333');
-        });
-    }
-    function stepFontSize(step: number) {
-        let $contentHook: HTMLElement | null = document.querySelector('.content-hook p');
-        fontSize += step;
-        if ($contentHook?.style)
-            $contentHook.style.fontSize = fontSize + 'px';
-    }
-    function setFontFamily(family: string) {
-        let $contentHook: HTMLElement | null = document.querySelector('.content-hook p');
-        if ($contentHook?.style)
-            $contentHook.style.fontFamily = family 
-    }
-    function toggleModal() {
-        setShowDialog(!showDialog)
     }
 }

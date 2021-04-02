@@ -1,0 +1,5 @@
+@use './variables' as *;
+.medium-weight {
+    font-weight: 600;
+    font-family: $ios-medium;
+}
