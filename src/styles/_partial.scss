@@ -3,3 +3,33 @@
     font-weight: 600;
     font-family: $ios-medium;
 }
+
+@mixin slide($from, $to, $name, $during: 0.5) {
+    @keyframes slideup-#{$name} {
+        from {
+            height: $from;
+        }
+        to {
+            height: $to;
+        }        
+    }
+
+    @keyframes slidedown-#{$name} {
+        from {
+            height: $to;
+        }
+        to {
+            height: $from;
+        }
+    }
+    .#{$name}-slideup {
+        animation-duration: #{$during}s;
+        animation-name: slideup-#{$name};
+        animation-fill-mode: forwards;
+    }
+    .#{$name}-slidedown {
+        animation-duration: #{$during}s;
+        animation-name: slidedown-#{$name};
+        animation-fill-mode: forwards;
+    }
+}

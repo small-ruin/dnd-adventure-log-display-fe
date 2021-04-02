@@ -8,6 +8,7 @@ import { AxiosResponse } from 'axios';
 import Dropdown, { DropdownItem } from '../../components/DropDown';
 import menus, { LOG_OPERATIONS, MENU_TYPE } from './logMenus';
 import logOperationHandles from './logOperationHandlers';
+import { throttle } from '../../utils';
 
 interface Params {
     id: string
@@ -38,11 +39,23 @@ export default function LogComp() {
                 }
             })
 
+        const handleScroll = throttle(() => {
+            var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
+            if (st > lastScrollTop) {
+                setShowSetting(false)
+            } else {
+                setShowSetting(true)
+            }
+            lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+    
+            // hide dropdown
+            setCurrentMenu(null);
+        }, 300, true)
+
         document.addEventListener("scroll", handleScroll);
 
         return () => document.removeEventListener("scroll", handleScroll)
     }, [id]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
 
     if (!log) {
         return <Loading></Loading>
@@ -57,18 +70,26 @@ export default function LogComp() {
     function getDropdownVisible(id: MENU_TYPE) {
         return id === currentMenu ? true : false
     }
+    function getMenuAnimationClassName() {
+        return showSetting ? 'log-bottom-menu-slideup' : 'log-bottom-menu-slidedown';
+    }
 
     return (
         <div className="log main-content">
             <h1>{log.name}</h1>
             <h3 className="grey-title">{log.createdAt}</h3>
             <div className="content-hook" dangerouslySetInnerHTML={{ __html: log.content }}></div>
-            { showSetting && <div className="bottom-menu">
-                {
-                    menus.map(menu => menu.dropdown ? <Dropdown key={menu.id} list={menu.dropdown} onSelect={handlerMenuItemClick} visible={getDropdownVisible(menu.id)}>
-                        <Button type='text' onClick={() => handlerMenuClick(menu.id)} style={{ color: '#FCFAF2' }}>{menu.text}</Button>
-                    </Dropdown> : <Button type='text' style={{ color: '#FCFAF2' }}>{menu.text}</Button>)
-                }
+            { <div className={`bottom-menu ${getMenuAnimationClassName()}`}>
+                    {
+                        menus.map(menu => menu.dropdown ? <Dropdown
+                            key={menu.id}
+                            list={menu.dropdown}
+                            onSelect={handlerMenuItemClick}
+                            visible={getDropdownVisible(menu.id)}
+                            style={{ padding: '5px 0'}}>
+                                <Button type='text' onClick={() => handlerMenuClick(menu.id)} style={{ color: '#FCFAF2' }}>{menu.text}</Button>
+                        </Dropdown> : <Button type='text' style={{ color: '#FCFAF2' }}>{menu.text}</Button>)
+                    }
             </div>}
             <div className={'bottom-button-group'}>
                 {prevId && <Link to={'/log/' + prevId}>上一夜</Link>}
@@ -76,17 +97,4 @@ export default function LogComp() {
             </div>
         </div>
     )
-
-    function handleScroll() {
-        var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
-        if (st > lastScrollTop) {
-            setShowSetting(false)
-        } else {
-            setShowSetting(true)
-        }
-        lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
-
-        // hide dropdown
-        setCurrentMenu(null);
-    }
 }

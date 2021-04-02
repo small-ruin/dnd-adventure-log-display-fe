@@ -15,3 +15,24 @@ export function greyFilter(colorStr: string) {
     return colorParse(`rgba(${GREY},${GREY},${GREY})`).hex;
 }
 
+export function throttle(cb: Function, wait: number, immediate = false) {
+    let timeout: null | NodeJS.Timeout = null;
+    let initialCall = true;
+
+    return function (...args: any[]) {
+        const callNow = immediate && initialCall
+        const next = () => {
+            cb.apply(this, args)
+            timeout = null
+        }
+
+        if (callNow) {
+            initialCall = false
+            next()
+        }
+
+        if (!timeout) {
+            timeout = setTimeout(next, wait)
+        }
+    }
+}

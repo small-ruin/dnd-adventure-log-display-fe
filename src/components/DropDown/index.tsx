@@ -10,9 +10,10 @@ interface DropdownProps<T = number | string> {
     list: DropdownItem<T>[],
     onSelect(item: DropdownItem<T>, e: React.MouseEvent): void,
     visible?: boolean,
+    style?: React.CSSProperties,
 }
 
-const Dropdown: FunctionComponent<DropdownProps> = ({list, onSelect, visible = false, children}) => {
+const Dropdown: FunctionComponent<DropdownProps> = ({list, onSelect, visible = false, children, style}) => {
     const dropdownMenu = useRef<HTMLDivElement>(null);
     const Item = (itemProps: DropdownItem) => {
         return <div className="dropdown-item" onClick={e => onSelect(itemProps, e)}>
@@ -26,7 +27,7 @@ const Dropdown: FunctionComponent<DropdownProps> = ({list, onSelect, visible = f
         }
     })
     return (
-        <div className='dropdown-wrapper'>
+        <div className='dropdown-wrapper' style={style}>
             {visible && <div className="dropdown-menu" ref={dropdownMenu}>
                 {
                     list.map(i => <Item key={i.id} id={i.id} text={i.text} />)
