@@ -1,18 +1,20 @@
 import { LOG_OPERATIONS } from './logMenus';
 import { greyFilter } from '../../utils'
 
-export default {
+const logOperations = {
     [LOG_OPERATIONS.DELETE_ALL_BRACKETS]: () => toggleAllBrackets(false),
     [LOG_OPERATIONS.DELETE_ALL_BRACKETS_BUT_NOT_SPACE]: () => hideBrackets(),
     [LOG_OPERATIONS.SHOW_ALL_BRACKETS]: () => toggleAllBrackets(true),
     [LOG_OPERATIONS.FONT_SIZE_DECREASE]: () => stepFontSize(-1),
     [LOG_OPERATIONS.FONT_SIZE_INCREASE]: () => stepFontSize(1),
-    [LOG_OPERATIONS.COLOR_GREY]: () => greyColor(),
-    [LOG_OPERATIONS.COLOR_ALL_BLACK]: () => removeColor(),
+    [LOG_OPERATIONS.COLOR_GREY]: () => setColor(greyFilter),
+    [LOG_OPERATIONS.COLOR_ALL_BLACK]: () => setColor('#333'),
     [LOG_OPERATIONS.COLOR_RESTORE]: () => restoreColor(),
     [LOG_OPERATIONS.FONT_FAMILY_HEI]: () => setFontFamily('Helvetica Neue, Microsoft YaHei, PingFang SC, Heiti SC, sans-serif'),
     [LOG_OPERATIONS.FONT_FAMILY_SONG]: () => setFontFamily('Georgia,Times New Roman,Times,Songti SC,serif'),
 }
+
+export default logOperations;
 
 function toggleAllBrackets(visible = false) {
     const eles: HTMLElement[] = Array.from(document.querySelectorAll('font, br'));
@@ -41,21 +43,20 @@ function hideBrackets() {
         }
     })
 }
-function removeColor() {
+function setColor(color: string | ((color: string) => string)) {
     document.querySelectorAll('font').forEach(ele => {
-        let originColor = ele.getAttribute('color');
-        if (!originColor) return;
-        ele.setAttribute('data-origin-color', originColor);
-        ele.setAttribute('color', '#333');
-    });
-}
-function greyColor() {
-    document.querySelectorAll('font').forEach(ele => {
-        let originColor = ele.getAttribute('color');
-        if (!originColor) return;
-        ele.setAttribute('data-origin-color', originColor);
-        ele.setAttribute('color', greyFilter(originColor));
-    });
+        let originColor = ele.getAttribute('data-origin-color') || ele.getAttribute('color');
+        if (originColor) {
+            if (!ele.getAttribute('data-origin-color')) {
+                ele.setAttribute('data-origin-color', originColor);
+            }
+            if (typeof color === 'string') {
+                ele.setAttribute('color', color);
+            } else {
+                ele.setAttribute('color', color(originColor));
+            }
+        }
+    }); 
 }
 function restoreColor() {
     document.querySelectorAll('font').forEach(ele => {
