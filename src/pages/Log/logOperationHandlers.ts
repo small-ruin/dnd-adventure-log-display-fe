@@ -1,4 +1,5 @@
 import { LOG_OPERATIONS } from './logMenus';
+import { greyFilter } from '../../utils'
 
 export default {
     [LOG_OPERATIONS.DELETE_ALL_BRACKETS]: () => hideBrackets(),
@@ -39,7 +40,12 @@ function removeColor() {
     });
 }
 function greyColor() {
-
+    document.querySelectorAll('font').forEach(ele => {
+        let originColor = ele.getAttribute('color');
+        if (!originColor) return;
+        ele.setAttribute('data-origin-color', originColor);
+        ele.setAttribute('color', greyFilter(originColor));
+    });
 }
 function stepFontSize(step: number, fontSize = 18) {
     let $contentHook: HTMLElement | null = document.querySelector('.content-hook p');
