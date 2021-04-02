@@ -2,8 +2,9 @@ import { LOG_OPERATIONS } from './logMenus';
 import { greyFilter } from '../../utils'
 
 export default {
-    [LOG_OPERATIONS.DELETE_ALL_BRACKETS]: () => hideBrackets(),
+    [LOG_OPERATIONS.DELETE_ALL_BRACKETS]: () => toggleAllBrackets(false),
     [LOG_OPERATIONS.DELETE_ALL_BRACKETS_BUT_NOT_SPACE]: () => hideBrackets(),
+    [LOG_OPERATIONS.SHOW_ALL_BRACKETS]: () => toggleAllBrackets(true),
     [LOG_OPERATIONS.FONT_SIZE_DECREASE]: () => stepFontSize(-1),
     [LOG_OPERATIONS.FONT_SIZE_INCREASE]: () => stepFontSize(1),
     [LOG_OPERATIONS.GREY]: () => greyColor(),
@@ -12,15 +13,27 @@ export default {
     [LOG_OPERATIONS.FONT_FAMILY_SONG]: () => setFontFamily('Georgia,Times New Roman,Times,Songti SC,serif'),
 }
 
+function toggleAllBrackets(visible = false) {
+    const eles: HTMLElement[] = Array.from(document.querySelectorAll('font, br'));
+    eles.forEach(ele => {
+        const text = ele.textContent;
+        if (text && text.match(/.*> [（()].*[)）]?/)) {
+            ele.style.display = visible ? 'inline' : 'none'
+            let prev = ele.previousElementSibling as HTMLElement | null;
+            while (prev && prev.textContent?.match(/^\s+$|\d+:\d+:\d+|<br>|^$/)) {
+                prev.style.display = visible ? 'inline' : 'none'
+                prev = prev.previousElementSibling as HTMLElement | null;
+            }
+        } else {
+            ele.textContent && (ele.textContent = ele.textContent.replace(/（.*）/g, ''));
+        }
+    })
+}
 function hideBrackets() {
     const eles: HTMLElement[] = Array.from(document.querySelectorAll('font, br'));
     eles.forEach(ele => {
         const text = ele.textContent;
         if (text && text.match(/.*> [（()].*[)）]?/)) {
-            // const prev = ele.previousElementSibling as HTMLElement | null;
-            // while (prev && prev.textContent?.match(/&nbsp;|\d+:\d+:\d+|<br>/)) {
-            //     prev.style.display = 'none'
-            // }
             ele.style.display = 'none'
         } else {
             ele.textContent && (ele.textContent = ele.textContent.replace(/（.*）/g, ''));

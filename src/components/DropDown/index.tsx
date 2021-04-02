@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect, useRef } from 'react';
+import './DropDown.scss';
 
 export interface DropdownItem<T = number | string> {
     id: T,
@@ -12,16 +13,23 @@ interface DropdownProps<T = number | string> {
 }
 
 const Dropdown: FunctionComponent<DropdownProps> = ({list, onSelect, visible = false, children}) => {
+    const dropdownMenu = useRef<HTMLDivElement>(null);
     const Item = (itemProps: DropdownItem) => {
         return <div className="dropdown-item" onClick={e => onSelect(itemProps, e)}>
             {itemProps.text}
         </div>
     }
+    useEffect(() => {
+        const node = dropdownMenu.current;
+        if (node) {
+            node.style.top = `${0 - node.getBoundingClientRect().height - 15}px`;
+        }
+    })
     return (
         <div className='dropdown-wrapper'>
-            {visible && <div className="dropdown-menu">
+            {visible && <div className="dropdown-menu" ref={dropdownMenu}>
                 {
-                    list.map(i => <Item id={i.id} text={i.text} />)
+                    list.map(i => <Item key={i.id} id={i.id} text={i.text} />)
                 }
             </div>}
             {children}

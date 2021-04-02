@@ -24,8 +24,6 @@ export default function LogComp() {
     const [prevId, setPrevId] = useState<string | null>(null);
     const [currentMenu, setCurrentMenu] = useState<MENU_TYPE | null>(null);
 
-    let fontSize = 18;
-
     useEffect(() => {
         get('/log/' + id)
             .then((res: AxiosResponse<Log>) => {
@@ -42,7 +40,7 @@ export default function LogComp() {
 
         document.addEventListener("scroll", handleScroll);
 
-        return document.removeEventListener("scroll", handleScroll)
+        return () => document.removeEventListener("scroll", handleScroll)
     }, [id]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
@@ -65,13 +63,13 @@ export default function LogComp() {
             <h1>{log.name}</h1>
             <h3 className="grey-title">{log.createdAt}</h3>
             <div className="content-hook" dangerouslySetInnerHTML={{ __html: log.content }}></div>
-            <div className="bottom-menu">
+            { showSetting && <div className="bottom-menu">
                 {
                     menus.map(menu => menu.dropdown ? <Dropdown key={menu.id} list={menu.dropdown} onSelect={handlerMenuItemClick} visible={getDropdownVisible(menu.id)}>
-                        <Button onClick={() => handlerMenuClick(menu.id)}>{menu.text}</Button>
-                    </Dropdown> : <Button>{menu.text}</Button>)
+                        <Button type='text' onClick={() => handlerMenuClick(menu.id)} style={{ color: '#FCFAF2' }}>{menu.text}</Button>
+                    </Dropdown> : <Button type='text' style={{ color: '#FCFAF2' }}>{menu.text}</Button>)
                 }
-            </div>
+            </div>}
             <div className={'bottom-button-group'}>
                 {prevId && <Link to={'/log/' + prevId}>上一夜</Link>}
                 {nextId && <Link to={'/log/' + nextId}>下一夜</Link>}
@@ -87,5 +85,8 @@ export default function LogComp() {
             setShowSetting(true)
         }
         lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+
+        // hide dropdown
+        setCurrentMenu(null);
     }
 }
