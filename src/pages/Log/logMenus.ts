@@ -9,8 +9,9 @@ export enum LOG_OPERATIONS {
     DELETE_ALL_BRACKETS = 'DELETE_ALL_BRACKETS',
     DELETE_ALL_BRACKETS_BUT_NOT_SPACE = 'DELETE_ALL_BRACKETS_BUT_NOT_SPACE',
     SHOW_ALL_BRACKETS = 'SHOW_ALL_BRACKETS',
-    ALL_BLACK = 'ALL_BLACK',
-    GREY = 'GREY',
+    COLOR_ALL_BLACK = 'ALL_BLACK',
+    COLOR_GREY = 'GREY',
+    COLOR_RESTORE = 'COLOR_RESTORE',
     FONT_SIZE_INCREASE = 'FONT_SIZE_INCREASE',
     FONT_SIZE_DECREASE = 'FONT_SIZE_DECREASE',
     FONT_FAMILY_HEI = 'FONT_FAMILY_HEI',
@@ -46,12 +47,16 @@ export default [
         text: '颜色',
         dropdown: [
             {
-                id: LOG_OPERATIONS.ALL_BLACK,
+                id: LOG_OPERATIONS.COLOR_ALL_BLACK,
                 text: '清除颜色'
             },
             {
-                id: LOG_OPERATIONS.GREY,
+                id: LOG_OPERATIONS.COLOR_GREY,
                 text: '灰度化'
+            },
+            {
+                id: LOG_OPERATIONS.COLOR_RESTORE,
+                text: '恢复颜色'
             }
         ]
     },

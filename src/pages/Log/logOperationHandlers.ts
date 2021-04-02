@@ -7,8 +7,9 @@ export default {
     [LOG_OPERATIONS.SHOW_ALL_BRACKETS]: () => toggleAllBrackets(true),
     [LOG_OPERATIONS.FONT_SIZE_DECREASE]: () => stepFontSize(-1),
     [LOG_OPERATIONS.FONT_SIZE_INCREASE]: () => stepFontSize(1),
-    [LOG_OPERATIONS.GREY]: () => greyColor(),
-    [LOG_OPERATIONS.ALL_BLACK]: () => removeColor(),
+    [LOG_OPERATIONS.COLOR_GREY]: () => greyColor(),
+    [LOG_OPERATIONS.COLOR_ALL_BLACK]: () => removeColor(),
+    [LOG_OPERATIONS.COLOR_RESTORE]: () => restoreColor(),
     [LOG_OPERATIONS.FONT_FAMILY_HEI]: () => setFontFamily('Helvetica Neue, Microsoft YaHei, PingFang SC, Heiti SC, sans-serif'),
     [LOG_OPERATIONS.FONT_FAMILY_SONG]: () => setFontFamily('Georgia,Times New Roman,Times,Songti SC,serif'),
 }
@@ -40,15 +41,11 @@ function hideBrackets() {
         }
     })
 }
-function showBrackets() {
-    const eles: HTMLElement[] = Array.from(document.querySelectorAll('font, br'));
-    eles.forEach(ele => {
-        if (ele.style.display === 'none')
-            ele.style.display = 'inline';
-    })
-}
 function removeColor() {
     document.querySelectorAll('font').forEach(ele => {
+        let originColor = ele.getAttribute('color');
+        if (!originColor) return;
+        ele.setAttribute('data-origin-color', originColor);
         ele.setAttribute('color', '#333');
     });
 }
@@ -59,6 +56,14 @@ function greyColor() {
         ele.setAttribute('data-origin-color', originColor);
         ele.setAttribute('color', greyFilter(originColor));
     });
+}
+function restoreColor() {
+    document.querySelectorAll('font').forEach(ele => {
+        let originColor = ele.getAttribute('data-origin-color');
+        if (originColor) {
+            ele.setAttribute('color', originColor);
+        }
+    })
 }
 function stepFontSize(step: number, fontSize = 18) {
     let $contentHook: HTMLElement | null = document.querySelector('.content-hook p');
