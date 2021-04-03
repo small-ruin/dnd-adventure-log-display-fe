@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Adventure, Log, LogDetail } from '../../interface';
-import { get } from '../../request';
+import { get, Urls } from '../../request';
 import { Link, useParams } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
 import { Dropdown, DropdownItem, Loading, Button, BreadCrumb  } from '../../components';
@@ -126,8 +126,8 @@ export default function LogComp() {
                     }
             </div>}
             <div className={'bottom-button-group'}>
-                {prevId && <Link to={'/log/' + prevId}>上一夜</Link>}
-                {nextId && <Link to={'/log/' + nextId}>下一夜</Link>}
+                {prevId && <Link to={Urls.getLogUrl(prevId)}>上一夜</Link>}
+                {nextId && <Link to={Urls.getLogUrl(nextId)}>下一夜</Link>}
             </div>
         </div>
     )
