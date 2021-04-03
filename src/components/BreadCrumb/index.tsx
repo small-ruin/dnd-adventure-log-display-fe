@@ -7,7 +7,7 @@ import './BreadCrumb.scss';
 interface Props {
     adventureList?: Adventure[],
     adventure?: Adventure | null,
-    logList?: Log[],
+    logList?: Log[] | null,
     currentLogName?: string,
 }
 

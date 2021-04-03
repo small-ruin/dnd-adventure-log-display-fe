@@ -18,7 +18,7 @@ export enum LOG_OPERATIONS {
     FONT_FAMILY_SONG = 'FONT_FAMILY_SONG',
 }
 export enum MENU_TYPE {
-    BRACKETS,
+    BRACKETS = 1,
     COLOR,
     FONT_FAMILY,
     FONT_SIZE,

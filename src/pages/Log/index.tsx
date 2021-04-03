@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Adventure, LogDetail } from '../../interface';
+import { Adventure, Log, LogDetail } from '../../interface';
 import { get } from '../../request';
 import { Link, useParams } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
@@ -18,6 +18,7 @@ export default function LogComp() {
     const { id } = useParams<Params>();
 
     const [log, setLog] = useState<LogDetail | null>(null);
+    const [logs, setLogs] = useState<Log[] | null>(null);
     const [adventure, setAdventure] = useState<Adventure | null>(null);
     const [showSetting, setShowSetting] = useState<boolean>(true);
     const [nextId, setNextId] = useState<string | null>(null);
@@ -37,9 +38,21 @@ export default function LogComp() {
                     const nowIndex = arr.findIndex(i => i === id);
                     nowIndex !== 0 && setPrevId(arr[nowIndex - 1]);
                     nowIndex !== arr.length - 1 && setNextId(arr[nowIndex + 1]);
+
+                    getLogList(adventure.id);
                 }
             })
+    }, [id]);
 
+    function getLogList(adventureId: number) {
+        get(`/adventure/${adventureId}/logs`).then((res: AxiosResponse<Log[]>) => {
+            if (Array.isArray(res.data)) {
+                setLogs(res.data);
+            }
+        })
+    }
+
+    useEffect(() => {
         const handleScroll = throttle(() => {
             var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
             if (st > lastScrollTop) {
@@ -56,7 +69,26 @@ export default function LogComp() {
         document.addEventListener("scroll", handleScroll);
 
         return () => document.removeEventListener("scroll", handleScroll)
-    }, [id]);
+    })
+
+    useEffect(() => {
+        if (currentMenu) {
+            setTimeout(() => window.addEventListener('click', clickOut));
+        } else {
+            window.removeEventListener('click', clickOut)
+        }
+        return () => window.removeEventListener('click', clickOut);
+    })
+
+    function clickOut(e: MouseEvent) { 
+        setCurrentMenu(null)
+    };
+
+    useEffect(() => {
+        const root = document.getElementById('root');
+        root && (root.style.background = 'linear-gradient(#BDC0BA, #0089A7)');
+        return () => { root && (root.style.background = '#BDC0BA') };
+    })
 
     if (!log) {
         return <Loading></Loading>
@@ -77,7 +109,7 @@ export default function LogComp() {
 
     return (
         <div className="log main-content">
-            <BreadCrumb adventure={adventure} currentLogName={log.name} />
+            <BreadCrumb adventure={adventure} logList={logs} currentLogName={log.name} />
             <h1>{log.name}</h1>
             <h3 className="grey-title">{log.createdAt}</h3>
             <div className="content-hook" dangerouslySetInnerHTML={{ __html: log.content }}></div>
