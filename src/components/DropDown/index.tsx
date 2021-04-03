@@ -8,12 +8,12 @@ export interface DropdownItem<T = number | string> {
 
 interface DropdownProps<T = number | string> {
     list: DropdownItem<T>[],
-    onSelect(item: DropdownItem<T>, e: React.MouseEvent): void,
+    onSelect?(item: DropdownItem<T>, e: React.MouseEvent): void,
     visible?: boolean,
     style?: React.CSSProperties,
 }
 
-const Dropdown: FunctionComponent<DropdownProps> = ({list, onSelect, visible = false, children, style}) => {
+const Dropdown: FunctionComponent<DropdownProps> = ({list, onSelect = ()=>{}, visible = false, children, style}) => {
     const dropdownMenu = useRef<HTMLDivElement>(null);
     const Item = (itemProps: DropdownItem) => {
         return <div className="dropdown-item" onClick={e => onSelect(itemProps, e)}>
@@ -37,4 +37,5 @@ const Dropdown: FunctionComponent<DropdownProps> = ({list, onSelect, visible = f
         </div>
     )
 }
+export { Dropdown };
 export default Dropdown;

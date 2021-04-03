@@ -1,25 +1,21 @@
-interface Log {
+export interface LogDetail extends Log {
+  content: string,
+  adventure: Adventure,
+}
+export interface Log {
   id: number,
   name:　string,
-  content: string,
   createdAt: string,
-  adventure?: Adventure,
 }
-interface Adventure {
+export interface Adventure {
   id: number,
   name: string,
   createAt: string,
   logs: Log[],
   order: string,
 }
-interface SearchResult {
+export interface SearchResult {
     id: number,
     name: string,
     results: string[],
-}
-
-export type {
-  Log,
-  Adventure,
-  SearchResult,
 }

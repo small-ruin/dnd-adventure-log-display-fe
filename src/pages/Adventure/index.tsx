@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Adventure, Log, SearchResult } from '../../interface';
+import { Adventure, Log, LogDetail, SearchResult } from '../../interface';
 import cheerio from 'cheerio';
 import { get, Urls } from '../../request';
 import { useParams, Link } from 'react-router-dom';
@@ -70,7 +70,7 @@ export default function AdventureComp() {
       get('/adventure/search', { params: { key, id } })
         .then(res => {
             if (res.data.length > 0) {
-                res.data.forEach((log: Log & SearchResult) => log.results = parseHtml(log.content));
+                res.data.forEach((log: LogDetail & SearchResult) => log.results = parseHtml(log.content));
                 setSearchResult(res.data)
             }
         })

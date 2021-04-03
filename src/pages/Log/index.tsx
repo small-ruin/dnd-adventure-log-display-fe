@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Log } from '../../interface';
+import { Adventure, LogDetail } from '../../interface';
 import { get } from '../../request';
 import { Link, useParams } from 'react-router-dom';
-import Loading from '../../components/Loading'
-import Button from '../../components/Button';
 import { AxiosResponse } from 'axios';
-import Dropdown, { DropdownItem } from '../../components/DropDown';
+import { Dropdown, DropdownItem, Loading, Button, BreadCrumb  } from '../../components';
 import menus, { LOG_OPERATIONS, MENU_TYPE } from './logMenus';
 import logOperationHandles from './logOperationHandlers';
 import { throttle } from '../../utils';
@@ -19,7 +17,8 @@ let lastScrollTop = 0
 export default function LogComp() {
     const { id } = useParams<Params>();
 
-    const [log, setLog] = useState<Log | null>(null);
+    const [log, setLog] = useState<LogDetail | null>(null);
+    const [adventure, setAdventure] = useState<Adventure | null>(null);
     const [showSetting, setShowSetting] = useState<boolean>(true);
     const [nextId, setNextId] = useState<string | null>(null);
     const [prevId, setPrevId] = useState<string | null>(null);
@@ -27,12 +26,14 @@ export default function LogComp() {
 
     useEffect(() => {
         get('/log/' + id)
-            .then((res: AxiosResponse<Log>) => {
+            .then((res: AxiosResponse<LogDetail>) => {
                 setLog(res.data)
-                const order = res.data.adventure?.order;
+                const adventure = res.data.adventure;
+                
+                if (adventure) {
+                    setAdventure(adventure);
 
-                if (order) {
-                    const arr = order.split(',');
+                    const arr = adventure.order.split(',');
                     const nowIndex = arr.findIndex(i => i === id);
                     nowIndex !== 0 && setPrevId(arr[nowIndex - 1]);
                     nowIndex !== arr.length - 1 && setNextId(arr[nowIndex + 1]);
@@ -76,6 +77,7 @@ export default function LogComp() {
 
     return (
         <div className="log main-content">
+            <BreadCrumb adventure={adventure} currentLogName={log.name} />
             <h1>{log.name}</h1>
             <h3 className="grey-title">{log.createdAt}</h3>
             <div className="content-hook" dangerouslySetInnerHTML={{ __html: log.content }}></div>

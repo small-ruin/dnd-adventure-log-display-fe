@@ -7,7 +7,6 @@
     cursor: pointer;
     @extend .medium-weight;
 }
-
 .button:hover {
     background-color: $舛花;
 }
@@ -15,3 +14,29 @@
 .button:active {
     background-color: $舛花;
 }
+.button.button-circle {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding: 0; 
+    text-align: center;
+    line-height: 40px; 
+}
+.button.button-text {
+    background-color: inherit;
+    color: $御召御纳户;
+    &:hover {
+        background-color: inherit;
+        color: $沈香茶;
+    }
+    &:active {
+        background-color: inherit;
+        color: $沈香茶;
+    }
+}
+.button.button-primary {
+    display: inline-block; 
+    padding: 5px 10px;
+    border-radius: 2px;
+}
+
