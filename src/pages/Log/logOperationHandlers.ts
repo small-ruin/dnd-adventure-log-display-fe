@@ -1,17 +1,25 @@
-import { LOG_OPERATIONS } from './logMenus';
+import { LOG_OPERATIONS, MENU_TYPE } from './logMenus';
 import { greyFilter } from '../../utils'
 
-const logOperations = {
-    [LOG_OPERATIONS.DELETE_ALL_BRACKETS]: () => toggleAllBrackets(false),
-    [LOG_OPERATIONS.DELETE_ALL_BRACKETS_BUT_NOT_SPACE]: () => hideBrackets(),
-    [LOG_OPERATIONS.SHOW_ALL_BRACKETS]: () => toggleAllBrackets(true),
-    [LOG_OPERATIONS.FONT_SIZE_DECREASE]: () => stepFontSize(-1),
-    [LOG_OPERATIONS.FONT_SIZE_INCREASE]: () => stepFontSize(1),
-    [LOG_OPERATIONS.COLOR_GREY]: () => setColor(greyFilter),
-    [LOG_OPERATIONS.COLOR_ALL_BLACK]: () => setColor('#333'),
-    [LOG_OPERATIONS.COLOR_RESTORE]: () => restoreColor(),
-    [LOG_OPERATIONS.FONT_FAMILY_HEI]: () => setFontFamily('Helvetica Neue, Microsoft YaHei, PingFang SC, Heiti SC, sans-serif'),
-    [LOG_OPERATIONS.FONT_FAMILY_SONG]: () => setFontFamily('Georgia,Times New Roman,Times,Songti SC,serif'),
+const voidFunction = () => {}
+const logOperations: { [key in LOG_OPERATIONS | MENU_TYPE]: Function } = {
+    DELETE_ALL_BRACKETS: () => toggleAllBrackets(false),
+    DELETE_ALL_BRACKETS_BUT_NOT_SPACE: () => hideBrackets(),
+    SHOW_ALL_BRACKETS: () => toggleAllBrackets(true),
+    FONT_SIZE_DECREASE: () => stepFontSize(-1),
+    FONT_SIZE_INCREASE: () => stepFontSize(1),
+    COLOR_GREY: () => setColor(greyFilter),
+    COLOR_ALL_BLACK: () => setColor('#333'),
+    COLOR_RESTORE: () => restoreColor(),
+    FONT_FAMILY_HEI: () => setFontFamily('Helvetica Neue, Microsoft YaHei, PingFang SC, Heiti SC, sans-serif'),
+    FONT_FAMILY_SONG: () => setFontFamily('Georgia,Times New Roman,Times,Songti SC,serif'),
+    'TO_TOP': () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    },
+    'BRACKETS': voidFunction,
+    'COLOR': voidFunction,
+    'FONT_FAMILY': voidFunction,
+    'FONT_SIZE': voidFunction,
 }
 
 export default logOperations;

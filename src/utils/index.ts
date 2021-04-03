@@ -20,19 +20,19 @@ export function throttle(cb: Function, wait: number, immediate = false) {
     let initialCall = true;
 
     return function (...args: any[]) {
-        const callNow = immediate && initialCall
         const next = () => {
             cb.apply(this, args)
             timeout = null
         }
 
-        if (callNow) {
+        if (immediate && initialCall) {
             initialCall = false
             next()
         }
 
         if (!timeout) {
-            timeout = setTimeout(next, wait)
+            const cb = setTimeout(next, wait);
+            timeout = cb;
         }
     }
 }

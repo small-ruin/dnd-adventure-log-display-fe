@@ -26,7 +26,6 @@ const BreadCrumb: FC<Props> = ({adventure, logList, currentLogName}) => {
     const history = useHistory();
 
     useEffect(() => {
-        console.log(currentBread)
         if (currentBread) {
             setTimeout(() => window.addEventListener('click', clickOut));
         } else {

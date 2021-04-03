@@ -16,12 +16,9 @@
     }
     .bottom-menu {
         background-color: v.$银鼠;
-        padding-left: 5px;
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
         position: fixed;
         left: 0;
         right: 0;
@@ -29,8 +26,21 @@
         height: 1.8em;
         transform: translate3d(0, 0, 0);
         box-sizing: border-box;
+        overflow: hidden;
+        .button-menu-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
         .button {
             margin: 0px 10px 0 0;
+        }
+        .percent {
+            margin-right: 1em;
+            color: v.$胡粉;
         }
     }
 }

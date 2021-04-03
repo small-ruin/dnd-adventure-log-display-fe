@@ -12,8 +12,6 @@ interface Params {
     id: string
 }
 
-let lastScrollTop = 0
-
 export default function LogComp() {
     const { id } = useParams<Params>();
 
@@ -24,6 +22,7 @@ export default function LogComp() {
     const [nextId, setNextId] = useState<string | null>(null);
     const [prevId, setPrevId] = useState<string | null>(null);
     const [currentMenu, setCurrentMenu] = useState<MENU_TYPE | null>(null);
+    const [percent, setPercent] = useState<number>(0);
 
     useEffect(() => {
         get('/log/' + id)
@@ -53,8 +52,16 @@ export default function LogComp() {
     }
 
     useEffect(() => {
+
+        let lastScrollTop = 0;
+        let st = 0;
+
         const handleScroll = throttle(() => {
-            var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
+            st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
+
+            const height = document.querySelector('.main-content')?.clientHeight;
+            height && setPercent((st+window.innerHeight)/height);
+
             if (st > lastScrollTop) {
                 setShowSetting(false)
             } else {
@@ -65,11 +72,9 @@ export default function LogComp() {
             // hide dropdown
             setCurrentMenu(null);
         }, 300, true)
-
         document.addEventListener("scroll", handleScroll);
-
         return () => document.removeEventListener("scroll", handleScroll)
-    })
+    }, [id])
 
     useEffect(() => {
         if (currentMenu) {
@@ -78,7 +83,7 @@ export default function LogComp() {
             window.removeEventListener('click', clickOut)
         }
         return () => window.removeEventListener('click', clickOut);
-    })
+    }, [id, currentMenu])
 
     function clickOut(e: MouseEvent) { 
         setCurrentMenu(null)
@@ -96,6 +101,7 @@ export default function LogComp() {
 
     function handlerMenuClick(id: MENU_TYPE) {
         setCurrentMenu(currentMenu === null ? id : null);
+        logOperationHandles[id](id);
     }
     function handlerMenuItemClick({ id }: DropdownItem<LOG_OPERATIONS>) {
         logOperationHandles[id]();
@@ -114,6 +120,7 @@ export default function LogComp() {
             <h3 className="grey-title">{log.createdAt}</h3>
             <div className="content-hook" dangerouslySetInnerHTML={{ __html: log.content }}></div>
             { <div className={`bottom-menu ${getMenuAnimationClassName()}`}>
+                <div className="button-menu-content">
                     {
                         menus.map(menu => menu.dropdown ? <Dropdown
                             key={menu.id}
@@ -122,8 +129,10 @@ export default function LogComp() {
                             visible={getDropdownVisible(menu.id)}
                             style={{ padding: '5px 0'}}>
                                 <Button type='text' onClick={() => handlerMenuClick(menu.id)} style={{ color: '#FCFAF2' }}>{menu.text}</Button>
-                        </Dropdown> : <Button type='text' style={{ color: '#FCFAF2' }}>{menu.text}</Button>)
+                        </Dropdown> : <Button type='text' onClick={() => handlerMenuClick(menu.id)} style={{ color: '#FCFAF2' }} key={menu.id}>{menu.text}</Button>)
                     }
+                </div>
+                <div className='percent'>{(percent * 100).toFixed(2)}%</div>
             </div>}
             <div className={'bottom-button-group'}>
                 {prevId && <Link to={Urls.getLogUrl(prevId)}>上一夜</Link>}
