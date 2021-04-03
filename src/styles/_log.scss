@@ -9,6 +9,9 @@
 .log.main-content {
     flex-grow: 0;
     position: relative;
+    font {
+        transition: color 2s;
+    }
     .bottom-button-group {
         display: flex;
         flex: 1;
@@ -26,7 +29,6 @@
         height: 1.8em;
         transform: translate3d(0, 0, 0);
         box-sizing: border-box;
-        overflow: hidden;
         .button-menu-content {
             flex-grow: 1;
             display: flex;
@@ -41,6 +43,8 @@
         .percent {
             margin-right: 1em;
             color: v.$胡粉;
+            height: 1.8em;
+            line-height: 1.8em;
         }
     }
 }

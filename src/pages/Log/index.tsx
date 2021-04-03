@@ -93,7 +93,7 @@ export default function LogComp() {
         const root = document.getElementById('root');
         root && (root.style.background = 'linear-gradient(#BDC0BA, #0089A7)');
         return () => { root && (root.style.background = '#BDC0BA') };
-    })
+    }, [id])
 
     if (!log) {
         return <Loading></Loading>
@@ -132,7 +132,7 @@ export default function LogComp() {
                         </Dropdown> : <Button type='text' onClick={() => handlerMenuClick(menu.id)} style={{ color: '#FCFAF2' }} key={menu.id}>{menu.text}</Button>)
                     }
                 </div>
-                <div className='percent'>{(percent * 100).toFixed(2)}%</div>
+                <div className={`percent ${getMenuAnimationClassName()}`}>{(percent * 100).toFixed(2)}%</div>
             </div>}
             <div className={'bottom-button-group'}>
                 {prevId && <Link to={Urls.getLogUrl(prevId)}>上一夜</Link>}
