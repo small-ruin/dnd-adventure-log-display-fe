@@ -2,7 +2,7 @@ import axios from 'axios';
 import { baseUrl, Urls } from './url';
 
 
-axios.defaults.baseURL = baseUrl + 'api';
+axios.defaults.baseURL = baseUrl + '/api';
 
 axios.interceptors.response.use(
     function(res) {

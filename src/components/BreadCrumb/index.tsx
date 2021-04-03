@@ -13,10 +13,8 @@ interface Props {
     currentLogName?: string,
 }
 
-enum Bread {
-    adventure = 1,
-    log
-}
+type Bread = 'home' | 'adventure' | 'log'
+
 
 const BreadCrumb: FC<Props> = ({adventure, logList, currentLogName}) => {
     const adventureList = useContext(advsContext);
@@ -44,25 +42,25 @@ const BreadCrumb: FC<Props> = ({adventure, logList, currentLogName}) => {
     }
 
     function handleBreadClick(bread: Bread, id: number | string) {
-        const url = bread === Bread.log ? Urls.getLogUrl(id) : Urls.getAdventureUrl(id);
+        const url = bread === 'log' ? Urls.getLogUrl(id) : Urls.getAdventureUrl(id);
         history.push(url);
     }
 
     const adventureButton = <Button
-        onClick={(e) => handleButtonClick(e, Bread.adventure)}
+        onClick={(e) => handleButtonClick(e, 'adventure')}
         type='text' >{adventure ? adventure.name : '未知冒险'}</Button>;
     const logButton = <Button
-        onClick={(e) => handleButtonClick(e, Bread.log)}
+        onClick={(e) => handleButtonClick(e, 'log')}
         type='text'>{currentLogName}</Button>;
 
     return <div className='bread-crumb'>
-        <Button type='text'>小废墟</Button>
+        <Button type='text' onClick={e => history.push(Urls.ROOT)}>小废墟</Button>
         &gt;
         {
             adventureListDropItem ?
                 <Dropdown list={adventureListDropItem}
-                    visible={currentBread === Bread.adventure}
-                    onSelect={({id}) => handleBreadClick(Bread.adventure, id)}
+                    visible={currentBread === 'adventure'}
+                    onSelect={({id}) => handleBreadClick('adventure', id)}
                     position={Position.bottom}>{adventureButton}</Dropdown> :
                 adventureButton
         }
@@ -71,8 +69,8 @@ const BreadCrumb: FC<Props> = ({adventure, logList, currentLogName}) => {
             currentLogName &&
                 logListDropItem ?
                     <Dropdown list={logListDropItem}
-                        visible={currentBread === Bread.log}
-                        onSelect={({id}) => handleBreadClick(Bread.log, id)}
+                        visible={currentBread === 'log'}
+                        onSelect={({id}) => handleBreadClick('log', id)}
                         position={Position.bottom}>{logButton}</Dropdown> :
                     logButton
         }
