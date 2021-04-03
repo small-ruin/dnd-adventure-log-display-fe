@@ -2,9 +2,9 @@
 @use '../../styles/partial';
 
 .dropdown-wrapper {
+    position: relative;
     .dropdown-menu {
         position: absolute;
-        top: -40px;
         background-color: $胡粉;
         box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
         padding: 5px;
@@ -17,6 +17,7 @@
         cursor: pointer;
         &:hover {
             background-color: $白练;
-        }
+        };
+        width: max-content;
     }
 }

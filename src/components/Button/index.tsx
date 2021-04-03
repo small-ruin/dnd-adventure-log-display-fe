@@ -1,19 +1,16 @@
-import * as React from 'react';
+import { FC, HTMLProps } from 'react';
 import './Button.scss';
 
-interface ButtonProps {
-    onClick?: () => void;
-    style?: React.CSSProperties;
+interface ButtonProps extends HTMLProps<HTMLDivElement> {
     type?: ButtonType;
 }
 
 type ButtonType = 'primary' | 'circle' | 'text';
 
-const Button: React.FC<ButtonProps> = (props) => {
-    const { children, onClick, type = 'primary' } = props;
-    let { style } = props;
+const Button: FC<ButtonProps> = (props) => {
+    const { children, type = 'primary', ...rest } = props;
 
-    return <div className={`button button-${type}`} onClick={onClick} style={style}>{children}</div>
+    return <div className={`button button-${type}`} {...rest}>{children}</div>
 }
 
 export { Button };

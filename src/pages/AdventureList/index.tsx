@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Adventure } from '../../interface';
-import { get, Urls } from '../../request';
+import { useContext } from 'react';
+import { advsContext } from '../App/App';
+import { Urls } from '../../request';
 import { Link } from 'react-router-dom';
 import '../../components/Loading'
-import Loading from '../../components/Loading';
 import Revachol from '../../asset//Revachol_034.webp';
 
   const diceMaker = [
@@ -13,32 +12,13 @@ import Revachol from '../../asset//Revachol_034.webp';
   ]
 
 export default function AdventureComp() {
-  const [advs, setAdvs] = useState<Adventure[] | null>(null)
-  const [error, setError] = useState<boolean>(false)
-
-  useEffect(() => {
-    get('/adventure').then(res => {
-      setAdvs(res.data);
-    }, err => {
-      console.error(err);
-      setError(true);
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (!advs) {
-    return <Loading></Loading>
-  }
-
-  if (error) {
-    return <>something error</>
-  }
+  const advs = useContext(advsContext)
 
   return (
     <div className='adventure-list main-content'>
         <img src={Revachol} alt="新奇骰子匠" width="90"></img>
         { diceMaker.map(i => <p key={i}>{i}</p>)}
-        { advs.map(adv => <Link className="adventure-link" to={ Urls.getAdventureUrl(adv.id) } key={adv.id}>{ adv.name }</Link>) }
+        { advs && advs.map(adv => <Link className="adventure-link" to={ Urls.getAdventureUrl(adv.id) } key={adv.id}>{ adv.name }</Link>) }
     </div>
   )
 }
