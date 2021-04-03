@@ -1,6 +1,15 @@
 @use './variables' as v;
 @use './partial' as p;
 
+.log {
+    h1 {
+        margin-top: 2em;
+    }
+    .grey-title {
+        margin: 1.2em 0;
+    }
+}
+
 .log.main-content .content-hook {
     font-size: 18px;
     line-height: 1.67;
@@ -10,7 +19,7 @@
     flex-grow: 0;
     position: relative;
     font {
-        transition: color 2s;
+        transition: color 1s, transform 1s;
     }
     .bottom-button-group {
         display: flex;

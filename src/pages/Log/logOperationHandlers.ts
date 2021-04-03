@@ -1,6 +1,8 @@
 import { LOG_OPERATIONS, MENU_TYPE } from './logMenus';
 import { greyFilter } from '../../utils'
 
+let fontSize = 18;
+
 const voidFunction = () => {}
 const logOperations: { [key in LOG_OPERATIONS | MENU_TYPE]: Function } = {
     DELETE_ALL_BRACKETS: () => toggleAllBrackets(false),
@@ -74,7 +76,7 @@ function restoreColor() {
         }
     })
 }
-function stepFontSize(step: number, fontSize = 18) {
+function stepFontSize(step: number) {
     let $contentHook: HTMLElement | null = document.querySelector('.content-hook p');
     fontSize += step;
     if ($contentHook?.style)

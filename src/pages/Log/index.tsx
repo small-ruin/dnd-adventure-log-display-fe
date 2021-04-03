@@ -52,7 +52,6 @@ export default function LogComp() {
     }
 
     useEffect(() => {
-
         let lastScrollTop = 0;
         let st = 0;
 
@@ -117,10 +116,10 @@ export default function LogComp() {
         <div className="log main-content">
             <BreadCrumb adventure={adventure} logList={logs} currentLogName={log.name} />
             <h1>{log.name}</h1>
-            <h3 className="grey-title">{log.createdAt}</h3>
+            <h3 className="grey-title">{new Date(log.createdAt).toLocaleString()}</h3>
             <div className="content-hook" dangerouslySetInnerHTML={{ __html: log.content }}></div>
             { <div className={`bottom-menu ${getMenuAnimationClassName()}`}>
-                <div className="button-menu-content">
+                <div className={`button-menu-content ${getMenuAnimationClassName()}`}>
                     {
                         menus.map(menu => menu.dropdown ? <Dropdown
                             key={menu.id}

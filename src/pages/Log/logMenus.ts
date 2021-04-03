@@ -1,4 +1,5 @@
 import { DropdownItem } from "../../components/DropDown"
+import { IsPC } from "../../utils";
 
 interface Menu {
     id: MENU_TYPE,
@@ -23,7 +24,7 @@ export type MENU_TYPE =
     'FONT_SIZE' |
     'TO_TOP'
 
-export default [
+let menu: Menu[] = [
     {
         id: 'BRACKETS',
         text: '去除括号',
@@ -92,4 +93,10 @@ export default [
         id: 'TO_TOP',
         text: '↑'
     }
-] as Menu[]
+]
+
+if (!IsPC()) {
+    menu = menu.filter(i => i.id !== 'FONT_FAMILY');
+}
+
+export default menu;
