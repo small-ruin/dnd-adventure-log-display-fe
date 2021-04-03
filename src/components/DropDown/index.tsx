@@ -7,8 +7,8 @@ export interface DropdownItem<T = number | string> {
 }
 
 export enum Position {
-    top = 1,
-    bottom,
+    top = 'top',
+    bottom = 'bottom',
 }
 
 interface DropdownProps<T = number | string> {

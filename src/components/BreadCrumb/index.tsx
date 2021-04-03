@@ -2,7 +2,9 @@ import { FC, useContext, useEffect, useState } from 'react';
 import { Adventure, Log } from '../../interface';
 import { Button, Dropdown, DropdownItem, Position } from '../index';
 import { advsContext } from '../../pages/App/App';
+import { Urls } from '../../request/url';
 import './BreadCrumb.scss';
+import { useHistory } from 'react-router';
 
 interface Props {
     adventureList?: Adventure[],
@@ -21,8 +23,10 @@ const BreadCrumb: FC<Props> = ({adventure, logList, currentLogName}) => {
     const [currentBread, setCurrentBread] = useState<Bread | null>(null)
     const adventureListDropItem: DropdownItem[] | undefined = adventureList?.map(({id, name}) => ({ id: id, text: name }));
     const logListDropItem: DropdownItem[] | undefined = logList?.map(({id, name}) => ({ id, text: name }));
+    const history = useHistory();
 
     useEffect(() => {
+        console.log(currentBread)
         if (currentBread) {
             setTimeout(() => window.addEventListener('click', clickOut));
         } else {
@@ -35,15 +39,21 @@ const BreadCrumb: FC<Props> = ({adventure, logList, currentLogName}) => {
         setCurrentBread(null)
     };
 
-    function handleButtonClick(bread: Bread) {
+    function handleButtonClick(e: React.MouseEvent, bread: Bread) {
+        e.stopPropagation();
         setCurrentBread(currentBread ? null : bread);
     }
 
+    function handleBreadClick(bread: Bread, id: number | string) {
+        const url = bread === Bread.log ? Urls.getLogUrl(id) : Urls.getAdventureUrl(id);
+        history.push(url);
+    }
+
     const adventureButton = <Button
-        onClick={() => handleButtonClick(Bread.adventure)}
+        onClick={(e) => handleButtonClick(e, Bread.adventure)}
         type='text' >{adventure ? adventure.name : '未知冒险'}</Button>;
     const logButton = <Button
-        onClick={() => handleButtonClick(Bread.log)}
+        onClick={(e) => handleButtonClick(e, Bread.log)}
         type='text'>{currentLogName}</Button>;
 
     return <div className='bread-crumb'>
@@ -53,6 +63,7 @@ const BreadCrumb: FC<Props> = ({adventure, logList, currentLogName}) => {
             adventureListDropItem ?
                 <Dropdown list={adventureListDropItem}
                     visible={currentBread === Bread.adventure}
+                    onSelect={({id}) => handleBreadClick(Bread.adventure, id)}
                     position={Position.bottom}>{adventureButton}</Dropdown> :
                 adventureButton
         }
@@ -62,6 +73,7 @@ const BreadCrumb: FC<Props> = ({adventure, logList, currentLogName}) => {
                 logListDropItem ?
                     <Dropdown list={logListDropItem}
                         visible={currentBread === Bread.log}
+                        onSelect={({id}) => handleBreadClick(Bread.log, id)}
                         position={Position.bottom}>{logButton}</Dropdown> :
                     logButton
         }
