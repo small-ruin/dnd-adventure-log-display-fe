@@ -64,7 +64,7 @@ const BreadCrumb: FC<Props> = ({adventure, logList, currentLogName}) => {
                     position={Position.bottom}>{adventureButton}</Dropdown> :
                 adventureButton
         }
-        &gt;
+        {currentLogName && '>'}
         { 
             currentLogName &&
                 logListDropItem ?

@@ -12,6 +12,7 @@ export interface Adventure {
   name: string,
   createAt: string,
   logs: Log[],
+  announcement: string,
   order: string,
 }
 export interface SearchResult {

@@ -88,11 +88,11 @@ export default function LogComp() {
         setCurrentMenu(null)
     };
 
-    useEffect(() => {
-        const root = document.getElementById('root');
-        root && (root.style.background = 'linear-gradient(#BDC0BA, #0089A7)');
-        return () => { root && (root.style.background = '#BDC0BA') };
-    }, [id])
+    // useEffect(() => {
+    //     const root = document.getElementById('root');
+    //     root && (root.style.background = 'linear-gradient(#BDC0BA, #0089A7)');
+    //     return () => { root && (root.style.background = '#BDC0BA') };
+    // }, [id])
 
     if (!log) {
         return <Loading></Loading>

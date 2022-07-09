@@ -5,6 +5,7 @@ import { get, Urls } from '../../request';
 import { useParams, Link } from 'react-router-dom';
 import Button from '../../components/Button';
 import Loading from '../../components/Loading';
+import { BreadCrumb } from '../../components';
 
 interface Params {
   id: string
@@ -42,6 +43,7 @@ export default function AdventureComp() {
 
   return (
     <div className='adventure main-content'>
+      <BreadCrumb adventure={adv} logList={logs} />
       <h1 className='title'>{ adv.name }</h1>
       <h3 className='createAt grey-title'>{ adv.createAt }</h3>
       <div className='content'>

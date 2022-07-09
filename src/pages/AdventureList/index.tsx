@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { advsContext } from '../App/App';
-import { Urls } from '../../request';
-import { Link } from 'react-router-dom';
+import { AdventureListItem } from './Adventure'
 import '../../components/Loading'
 import Revachol from '../../asset//Revachol_034.webp';
 
@@ -17,8 +16,10 @@ export default function AdventureComp() {
   return (
     <div className='adventure-list main-content'>
         <img src={Revachol} alt="新奇骰子匠" width="90"></img>
-        { diceMaker.map(i => <p key={i}>{i}</p>)}
-        { advs && advs.map(adv => <Link className="adventure-link" to={ Urls.getAdventureUrl(adv.id) } key={adv.id}>{ adv.name }</Link>) }
+        <section className='dice-maker'>
+          { diceMaker.map(i => <p key={i}>{i}</p>)}
+        </section>
+        { advs?.map(adv => <AdventureListItem key={adv.id} adventure={adv}></AdventureListItem>) }
     </div>
   )
 }
